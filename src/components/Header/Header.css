@@ -44,6 +44,7 @@
 .hover_effect:hover {
     color:#f0ad4e;
     transition: 0.2s ease-in-out;
+    text-decoration: none;
 }
 
 .header_optionLineOne {

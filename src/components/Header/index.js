@@ -8,19 +8,19 @@ import {
     Switch,
     Route,
     Link
-  } from "react-router-dom";
+} from "react-router-dom";
 import { useStateValue } from '../../StateProvider'
 
 const Header = () => {
-    const [{basket}, dispatch] = useStateValue()
+    const [{ basket }, dispatch] = useStateValue()
     return (
         <>
             <div className="header">
 
                 <Link to="/">
-                <img alt="logo" className="header_logo" src='http://pngimg.com/uploads/amazon/amazon_PNG11.png' />
+                    <img alt="logo" className="header_logo" src='http://pngimg.com/uploads/amazon/amazon_PNG11.png' />
                 </Link>
-               
+
 
 
                 <div className="header_search">
@@ -32,19 +32,22 @@ const Header = () => {
                             aria-describedby="basic-addon2"
                         />
                         <InputGroup.Append>
-                            <Button variant="warning outline-secondary"><SearchIcon fontSize="small"/></Button>
+                            <Button variant="warning outline-secondary"><SearchIcon fontSize="small" /></Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </div>
 
                 <div className="header_nav">
                     <div className="header_option">
-                        <span className="header_optionLineOne">
-                            Hello Pau
+                        <Link className="header_option hover_effect" to="/login">
+
+                            <span className="header_optionLineOne">
+                                Hello Pau
                     </span>
-                        <span className="header_optionLineTwo">
-                            Sign In
+                            <span className="header_optionLineTwo">
+                                Sign In
                     </span>
+                        </Link>
                     </div>
                     <div className="header_option">
                         <span className="header_optionLineOne">
@@ -63,9 +66,9 @@ const Header = () => {
                     </span>
                     </div>
                     <div className="header_optionBasket">
-                    <Link style={{color: 'white'}} to="/checkout">
-                    <ShoppingBasketIcon className="hover_effect" />
-                </Link>
+                        <Link style={{ color: 'white' }} to="/checkout">
+                            <ShoppingBasketIcon className="hover_effect" />
+                        </Link>
                         <span className="header_optionLineTwo header_basketCount">
                             {basket?.length}
                         </span>
