@@ -1,8 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Login.css'
-import { Link } from 'react-router-dom'
-import { InputGroup, FormControl } from 'react-bootstrap'
+import { Link, useHistory } from 'react-router-dom'
+import { auth } from '../../firebase'
 const Login = () => {
+    const history= useHistory()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const signIn = e => {
+        e.preventDefault()
+
+       auth.signInWithEmailAndPassword(email, password).then(
+           auth => {
+               history.push('/')
+           }
+       ).catch(
+           error => alert(error.message)
+       )
+    }
+    const register = e => {
+        e.preventDefault()
+        auth.createUserWithEmailAndPassword(email, password).then(
+            (auth) => { 
+                console.log(auth)
+                if (auth) {
+                    history.push('/')
+                }
+            }
+
+        ).catch(
+            error => alert(error.message)
+        )
+    }
+    const signInDemo = e => {
+        e.preventDefault()
+        // email, password
+    }
     return (
         <div className="login">
             <Link to="/">
@@ -13,16 +45,25 @@ const Login = () => {
 
 
             <div className="login_container">
-                <h1>Sign In</h1>
-                <InputGroup className="mb-3">
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id="inputGroup-sizing-default">Default</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl
-                        aria-label="Default"
-                        aria-describedby="inputGroup-sizing-default"
-                    />
-                </InputGroup>
+                <form>
+                    <div className="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input value={email} onChange={e => setEmail(e.target.value)} type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                    </div>
+                    <div className="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input value={password} onChange={e => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                    </div>
+                    <button onClick={signIn} type="submit" className="btn btn-warning login_button">Sign in</button>
+                </form>
+                <p style={{padding: '10px', marginBottom: '0',}}>
+                    By signing-in you agree to Amazon's Clone Project
+                    Conditions of Use & Sale. Please see your Privacy Notice, our 
+                    Cookies Notice and our Interest-Based ads
+                </p>
+
+                <button onClick={register} className="btn btn-primary login_registerButton">Create your Amazon Account</button>
+                <button onClick={signInDemo} className="mt-3 btn btn-info login_registerButton">Sign in using a Demo Account</button>
             </div>
         </div>
     )
