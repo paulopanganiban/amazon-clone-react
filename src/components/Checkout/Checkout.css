@@ -15,3 +15,8 @@
     padding: 10px;
     border-bottom: 1px solid lightgray;
 }
+
+.checkout_left > img {
+    object-fit: contain;
+    max-height: 200px;
+}
