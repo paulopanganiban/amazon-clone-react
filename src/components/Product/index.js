@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import { useStateValue } from '../../StateProvider';
 const Product = ({ title, image, price, rating, id }) => {
     const [{ basket }, dispatch] = useStateValue()
-    console.log('this is the basket >>> ', basket)
     // onClick
     const addToBasket = () => {
         // dispatch the item into the data layer

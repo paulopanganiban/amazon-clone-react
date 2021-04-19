@@ -59,7 +59,7 @@ const Login = () => {
                 <p style={{padding: '10px', marginBottom: '0',}}>
                     By signing-in you agree to Amazon's Clone Project
                     Conditions of Use & Sale. Please see your Privacy Notice, our 
-                    Cookies Notice and our Interest-Based ads
+                    Cookies Notice and our Interest-Based ads.
                 </p>
 
                 <button onClick={register} className="btn btn-primary login_registerButton">Create your Amazon Account</button>

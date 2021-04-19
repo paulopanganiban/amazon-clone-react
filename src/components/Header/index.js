@@ -4,15 +4,19 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
 } from "react-router-dom";
 import { useStateValue } from '../../StateProvider'
+import { auth } from '../../firebase'
 
 const Header = () => {
-    const [{ basket }, dispatch] = useStateValue()
+    const [{ basket, user }, dispatch] = useStateValue()
+
+    const handleAuthentication = () => {
+        if (user) {
+            auth.signOut()
+        }
+    }
     return (
         <>
             <div className="header">
@@ -38,14 +42,14 @@ const Header = () => {
                 </div>
 
                 <div className="header_nav">
-                    <div className="header_option">
-                        <Link className="header_option hover_effect" to="/login">
+                    <div onClick={handleAuthentication} className="header_option">
+                        <Link className="header_option hover_effect" to={!user && '/login'}>
 
                             <span className="header_optionLineOne">
-                                Hello Pau
+                                Hello {user?.name}
                     </span>
                             <span className="header_optionLineTwo">
-                                Sign In
+                                {user ? 'Sign Out' : 'Sign In'}
                     </span>
                         </Link>
                     </div>

@@ -1,10 +1,11 @@
 export const initialState = {
     basket: [],
+    user: null,
 }
 
 // Selector 
-export const getBasketTotal = (basket) => 
-basket?.reduce((amount, item) => item.price + amount, 0);
+export const getBasketTotal = (basket) =>
+    basket?.reduce((amount, item) => item.price + amount, 0);
 
 
 
@@ -20,10 +21,10 @@ const reducer = (state, action) => {
         case 'REMOVE_TO_CART':
             // find the index
             // hanapin mo yung index nung same na sinend via dispatch ng onClick remove.
-            const  index = state.basket.findIndex((basketItem) => basketItem.id === action.id
+            const index = state.basket.findIndex((basketItem) => basketItem.id === action.id
             )
             let newBasket = [...state.basket]
-            if (index >=0) {
+            if (index >= 0) {
                 newBasket.splice(index, 1)
             } else {
                 console.warn(`Cant remove product (id ${action.id})`)
@@ -31,6 +32,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 basket: newBasket
+            }
+        case 'SET_USER':
+            return {
+                ...state,
+                user: action.user
             }
         default:
             return state;
