@@ -46,7 +46,7 @@ const Header = () => {
                         <Link className="header_option hover_effect" to={!user && '/login'}>
 
                             <span className="header_optionLineOne">
-                                Hello {user?.email}
+                                Hello {!user ? 'Guest' : user?.email}
                     </span>
                             <span className="header_optionLineTwo">
                                 {user ? 'Sign Out' : 'Sign In'}
