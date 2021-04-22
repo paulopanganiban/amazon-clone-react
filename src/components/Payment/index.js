@@ -1,10 +1,62 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import { useElements, useStripe, CardElement } from '@stripe/react-stripe-js';
+import React, { useEffect, useState } from 'react'
+import CurrencyFormat from 'react-currency-format';
+import { Link, useHistory } from 'react-router-dom';
+import { getBasketTotal } from '../../reducer';
 import { useStateValue } from '../../StateProvider';
 import CheckoutProduct from '../CheckoutProduct';
+import axios from '../../axios'
 import './Payment.css'
 const Payment = () => {
-    const [{basket, user}, dispatch] = useStateValue();
+    // VARIABLES
+    const history = useHistory()
+    const stripe = useStripe()
+    const elements = useElements()
+    // FUNCTIONS
+    const handleSubmit = async e => {
+        // stripe stuff
+        e.preventDefault()
+        setProcessing(true)
+
+        const payload = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: elements.getElement(CardElement)
+            }
+        }).then(({ paymentIntent }) => {
+            // paymentIntent  = paymentConfirmation
+            setSucceeded(true)
+            setError(null)
+            setProcessing(false)
+
+
+            history.replace('/orders')
+        })
+    }
+    const handleChange = event => {
+        // Listen for changes in hte CardElement
+        // and display any errors as the customer types their details
+        setDisabled(event.empty)
+        setError(event.error ? event.error.message : "")
+    }
+    const [{ basket, user }, dispatch] = useStateValue();
+    const [error, setError] = useState(null)
+    const [clientSecret, setClientSecret] = useState(null)
+    const [disabled, setDisabled] = useState(true)
+    const [succeeded, setSucceeded] = useState(false)
+    const [processing, setProcessing] = useState("")
+
+    useEffect(() => {
+        // generate special stripe secret
+        const getClientSecret = async () => {
+            const response = await axios({
+                method: 'post',
+                url: `/payments/create?total=${getBasketTotal(basket) * 100}`
+            })
+            setClientSecret(response.data.clientSecret)
+        }
+        getClientSecret()
+    }, [basket])
+
     return (
         <div className='payment'>
             <div className='payment__container'>
@@ -44,15 +96,32 @@ const Payment = () => {
                         ))}
                     </div>
                 </div>
-            
-
-                {/* Payment section - Payment method */}
                 <div className='payment__section'>
                     <div className="payment__title">
                         <h3>Payment Method</h3>
                     </div>
                     <div className="payment__details">
-                            {/* Stripe magic will go */}
+                        <form onSubmit={handleSubmit} action="">
+                            <CardElement onChange={handleChange} />
+                            <div className="payment__priceContainer">
+                                <CurrencyFormat
+                                    renderText={(value) => (
+                                        <>
+                                            <h3>Order Total: {value}</h3>
+                                        </>
+                                    )}
+                                    decimalScale={2}
+                                    value={getBasketTotal(basket)}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    prefix={"$"}
+                                />
+                                <button disabled={processing || disabled || succeeded}>
+                                    <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
+                                </button>
+                            </div>
+                            {error && <div>{error}</div>}
+                        </form>
                     </div>
                 </div>
             </div>
