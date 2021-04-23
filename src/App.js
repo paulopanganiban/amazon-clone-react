@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { auth } from './firebase'
 import { useStateValue } from './StateProvider'
 import Payment from './components/Payment';
-
+import Orders from './components/Orders'
 // Stripe
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
@@ -42,6 +42,11 @@ function App() {
         
   
         <Switch>
+          <Route path='/orders'>
+            <Orders>
+
+            </Orders>
+          </Route>
           <Route path="/payment">
             <Header/>
             <Elements stripe={promise}>

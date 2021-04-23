@@ -7,6 +7,7 @@ import { useStateValue } from '../../StateProvider';
 import CheckoutProduct from '../CheckoutProduct';
 import axios from '../../axios'
 import './Payment.css'
+import {db} from '../../firebase'
 const Payment = () => {
     // VARIABLES
     const history = useHistory()
@@ -24,10 +25,21 @@ const Payment = () => {
             }
         }).then(({ paymentIntent }) => {
             // paymentIntent  = paymentConfirmation
+            db.collection('users')
+            .doc(user?.uid)
+            .collection('orders')
+            .doc(paymentIntent.id)
+            .set({
+                basket: basket,
+                amount: paymentIntent.amount,
+                created: paymentIntent.created,
+            })
             setSucceeded(true)
             setError(null)
             setProcessing(false)
-
+            dispatch({
+                type: 'EMPTY_BASKET'
+            })
 
             history.replace('/orders')
         })
@@ -56,7 +68,7 @@ const Payment = () => {
         }
         getClientSecret()
     }, [basket])
-
+    console.log('THE SECERET IS:', clientSecret)
     return (
         <div className='payment'>
             <div className='payment__container'>
