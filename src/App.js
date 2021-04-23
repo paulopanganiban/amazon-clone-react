@@ -43,9 +43,10 @@ function App() {
   
         <Switch>
           <Route path='/orders'>
-            {/* <Orders>
+            <Header/>
+           <Orders>
 
-            </Orders> */}
+            </Orders> 
           </Route>
           <Route path="/payment">
             <Header/>

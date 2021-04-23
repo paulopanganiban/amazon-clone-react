@@ -47,20 +47,26 @@ const Header = () => {
 
                             <span className="header_optionLineOne">
                                 Hello {!user ? 'Guest' : user?.email}
-                    </span>
+                            </span>
                             <span className="header_optionLineTwo">
                                 {user ? 'Sign Out' : 'Sign In'}
-                    </span>
+                            </span>
                         </Link>
                     </div>
-                    <div className="header_option">
-                        <span className="header_optionLineOne">
-                            Returns
+
+                    <Link to="/orders" className="hover_effect">
+                        <div className="header_option">
+
+                            <span className="header_optionLineOne">
+                                Returns
                     </span>
-                        <span className="header_optionLineTwo">
-                            & Orders
+
+                            <span className="header_optionLineTwo">
+                                & Orders
                     </span>
                     </div>
+                    </Link>
+
                     <div className="header_option">
                         <span className="header_optionLineOne">
                             Your
