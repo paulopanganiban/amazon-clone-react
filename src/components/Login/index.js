@@ -33,7 +33,16 @@ const Login = () => {
     }
     const signInDemo = e => {
         e.preventDefault()
+        const email = "demo@gmail.com"
+        const password = "demo@gmail.com"
         // email, password
+        auth.signInWithEmailAndPassword(email, password).then(
+            auth => {
+                history.push('/')
+            }
+        ).catch(
+            error => alert(error.message)
+        )
     }
     return (
         <div className="login">
